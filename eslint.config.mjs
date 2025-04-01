@@ -1,35 +1,49 @@
-import { dirname } from 'path'
-import { fileURLToPath } from 'url'
-import { FlatCompat } from '@eslint/eslintrc'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
+import { FlatCompat } from "@eslint/eslintrc";
+import stylistic from "@stylistic/eslint-plugin";
+import perfectionistPlugin from "eslint-plugin-perfectionist";
+import tseslint from "typescript-eslint";
 
 const compat = new FlatCompat({
-  baseDirectory: __dirname,
-})
+  baseDirectory: import.meta.dirname,
+  ignores: [
+    "./src/app/(payload)/admin/importMap.js",
+    "src/app/(payload)/",
+    "src/app/(payload)/admin/importMap.js",
+    "./src/migrations",
+    "src/migrations",
+    ".next",
+  ],
+});
 
-const eslintConfig = [
-  ...compat.extends('next/core-web-vitals', 'next/typescript'),
+export default tseslint.config(
+  ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
+    ignores: ["src/app/(payload)/", "src/app/(payload)/admin/importMap.js", "src/migrations", ".next"],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
     rules: {
-      '@typescript-eslint/ban-ts-comment': 'warn',
-      '@typescript-eslint/no-empty-object-type': 'warn',
-      '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/no-unused-vars': [
-        'warn',
-        {
-          vars: 'all',
-          args: 'after-used',
-          ignoreRestSiblings: false,
-          argsIgnorePattern: '^_',
-          varsIgnorePattern: '^_',
-          destructuredArrayIgnorePattern: '^_',
-          caughtErrorsIgnorePattern: '^(_|ignore)',
-        },
-      ],
+      "@typescript-eslint/no-unused-vars": "warn",
+      "prettier/prettier": "warn",
     },
   },
-]
-
-export default eslintConfig
+  stylistic.configs["recommended"],
+  perfectionistPlugin.configs["recommended-natural"],
+  ...compat.extends("plugin:prettier/recommended"),
+  {
+    ignores: ["src/app/(payload)/", "src/app/(payload)/admin/importMap.js", "src/migrations", ".next"],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+    rules: {
+      "@typescript-eslint/no-unused-vars": "warn",
+      "prettier/prettier": "warn",
+    },
+  },
+);

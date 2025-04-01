@@ -1,0 +1,40 @@
+import { createEnv } from "@t3-oss/env-nextjs";
+import { z } from "zod";
+
+export const env = createEnv({
+  client: {},
+  runtimeEnv: {
+    CLOUDFRONT_DISTRIBUTION: process.env.CLOUDFRONT_DISTRIBUTION,
+    DATABASE_URI: process.env.DATABASE_URI,
+    MUX_TOKEN_ID: process.env.MUX_TOKEN_ID,
+    MUX_TOKEN_SECRET: process.env.MUX_TOKEN_SECRET,
+    MUX_WEBHOOK_SIGNING_SECRET: process.env.MUX_WEBHOOK_SIGNING_SECRET,
+    NODE_ENV: process.env.NODE_ENV,
+    PAYLOAD_SECRET: process.env.PAYLOAD_SECRET,
+    PORT: process.env.PORT,
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
+    S3_ACCESS_KEY_ID: process.env.S3_ACCESS_KEY_ID,
+    S3_BUCKET: process.env.S3_BUCKET,
+    S3_ENDPOINT: process.env.S3_ENDPOINT,
+    S3_REGION: process.env.S3_REGION,
+    S3_SECRET_ACCESS_KEY: process.env.S3_SECRET_ACCESS_KEY,
+    VERCEL_URL: process.env.VERCEL_URL,
+  },
+  server: {
+    CLOUDFRONT_DISTRIBUTION: z.string(),
+    DATABASE_URI: z.string(),
+    MUX_TOKEN_ID: z.string(),
+    MUX_TOKEN_SECRET: z.string(),
+    MUX_WEBHOOK_SIGNING_SECRET: z.string(),
+    NODE_ENV: z.string().default("development"),
+    PAYLOAD_SECRET: z.string(),
+    PORT: z.coerce.number(),
+    RESEND_API_KEY: z.string(),
+    S3_ACCESS_KEY_ID: z.string(),
+    S3_BUCKET: z.string(),
+    S3_ENDPOINT: z.string(),
+    S3_REGION: z.string(),
+    S3_SECRET_ACCESS_KEY: z.string(),
+    VERCEL_URL: z.string().default("http://localhost:4000"),
+  },
+});
