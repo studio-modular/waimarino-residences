@@ -1,4 +1,6 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @layer base {
   :root {
@@ -166,6 +168,37 @@
       @apply mt-6;
     }
   }
+
+  /* body {
+		--sb-track-color: hsl(var(--muted));
+		--sb-thumb-color: #525a4a;
+		--sb-size: 14px;
+	}
+
+	.dark body {
+		--sb-track-color: hsl(var(--muted));
+		--sb-thumb-color: #8e9589;
+		--sb-size: 14px;
+	}
+
+	body::-webkit-scrollbar {
+		width: var(--sb-size)
+	}
+
+	body::-webkit-scrollbar-track {
+		background: var(--sb-track-color);
+	}
+
+	body::-webkit-scrollbar-thumb {
+		background: var(--sb-thumb-color);
+	}
+
+	@supports not selector(::-webkit-scrollbar) {
+		body {
+			scrollbar-color: var(--sb-thumb-color)
+											var(--sb-track-color);
+		}
+	} */
 }
 
 @layer segments {
@@ -209,6 +242,14 @@
   .carousel-classnames.next.musings .is-snapped .ratio {
     @apply !scale-[1.4] opacity-100;
   }
+  /*
+	.carousel-classnames.next.musings .slide .ratio {
+		@apply scale-90 opacity-70 transition-all origin-center;
+	}
+
+	.carousel-classnames.next.musings .is-snapped .ratio {
+		@apply !scale-[1] opacity-100;
+	} */
 
   .ws-section {
     @apply grid;
@@ -232,6 +273,14 @@
     grid-template-rows: auto;
     grid-template-areas: ". copy-one copy-one copy-one copy-one . . copy-two copy-two copy-two copy-two . . . . . . . image image image image image image";
   }
+
+  /* .carousel-classnames.next .slide .ratio {
+		@apply origin-right;
+	}
+
+	.carousel-classnames.next .is-snapped + .slide .ratio {
+		@apply origin-left;
+	} */
 }
 
 @layer sections {
