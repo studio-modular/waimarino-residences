@@ -5,7 +5,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "cross-env NODE_OPTIONS=--no-deprecation dotenv -- next build",
+    "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation dotenv -- next dev --turbo",
     "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation dotenv -- next dev",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation dotenv -- payload generate:importmap",
@@ -13,7 +13,7 @@
     "lint": "cross-env NODE_OPTIONS=--no-deprecation dotenv -- next lint --fix",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation dotenv -- payload",
     "payload:production": "cross-env NODE_OPTIONS=--no-deprecation dotenv -e .env.production -- payload",
-    "start": "cross-env NODE_OPTIONS=--no-deprecation dotenv -- next start",
+    "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "tsc": "cross-env NODE_OPTIONS=--no-deprecation dotenv -- tsc",
     "tsc:no-emit": "cross-env NODE_OPTIONS=--no-deprecation dotenv -- tsc --noEmit"
   },

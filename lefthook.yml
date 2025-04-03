@@ -3,7 +3,7 @@ pre-commit:
   commands:
     eslint:
       glob: "*.{js,ts,jsx,tsx}"
-      run: pnpm lint --fix --quiet --file {staged_files}
+      run: pnpm lint --quiet --file {staged_files}
       tags: lint style format
       stage_fixed: true
     tsc:
@@ -16,7 +16,7 @@ pre-push:
   parallel: true
   commands:
     eslint:
-      run: pnpm lint --fix --quiet
+      run: pnpm lint --quiet
     tsc:
       glob: "*.{js,ts,jsx,tsx}"
       run: pnpm tsc
