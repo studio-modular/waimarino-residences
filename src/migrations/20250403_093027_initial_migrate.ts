@@ -147,6 +147,7 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
   	"thumbnail_u_r_l" varchar,
   	"filename" varchar,
   	"mime_type" varchar,
+    "prefix" varchar,
   	"filesize" numeric,
   	"width" numeric,
   	"height" numeric,
