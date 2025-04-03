@@ -12,7 +12,7 @@ export function SectionHighlights({ asset, heading, highlights }: HighlightsBloc
         <div className="flex flex-col justify-center">
           <h2 className="mb-16">{heading}</h2>
           <div className="flex md:gap-16 gap-8 flex-wrap justify-between text-center richtext">
-            {[...highlights, ...highlights, ...highlights].map((h) => {
+            {highlights.map((h) => {
               return (
                 <div className="flex-1 basis-1/4 inline-flex justify-center" key={`${h.highlight} ${h.id}`}>
                   <div className="max-w-24">
