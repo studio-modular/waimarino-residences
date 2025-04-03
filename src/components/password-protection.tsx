@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { logIn } from "@/actions/login";
 import { Button } from "@/shadcn/components/ui/button";
 import { Input } from "@/shadcn/components/ui/input";
