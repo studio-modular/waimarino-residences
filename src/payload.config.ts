@@ -11,7 +11,7 @@ import computeBlurhash from "payload-blurhash-plugin";
 import sharp from "sharp";
 
 import { Images } from "./collections/images";
-import { Users } from "./collections/users";
+import { Users } from "./collections/Users";
 import { Home } from "./globals/home";
 import { Offer } from "./globals/offer";
 import { Properties } from "./globals/properties";
