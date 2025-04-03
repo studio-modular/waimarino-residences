@@ -201,7 +201,7 @@
   }
 
   * {
-    @apply border-border ring-offset-2 ring-foreground! outline-offset-2 outline-ring/50;
+    @apply border-border outline-offset-2 outline-ring/50;
   }
 
   html {
@@ -214,7 +214,7 @@
   }
 
   ::selection {
-    @apply bg-foreground text-background;
+    @apply bg-dg-dark-green text-dg-background;
   }
 
   .payload-richtext a {

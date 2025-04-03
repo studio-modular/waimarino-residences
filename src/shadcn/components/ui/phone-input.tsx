@@ -44,9 +44,7 @@ const PhoneInput: React.ForwardRefExoticComponent<PhoneInputProps> = React.forwa
 PhoneInput.displayName = "PhoneInput";
 
 const InputComponent = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
-  ({ className, ...props }, ref) => (
-    <Input autoComplete="mobile tel" className={cn("rounded-e-lg rounded-s-none", className)} {...props} ref={ref} />
-  ),
+  ({ className, ...props }, ref) => <Input className={cn("rounded-none", className)} {...props} ref={ref} />,
 );
 InputComponent.displayName = "InputComponent";
 
@@ -67,13 +65,13 @@ const CountrySelect = ({ disabled, onChange, options: countryList, value: select
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          className="flex gap-1 rounded-e-none rounded-s-lg border-r-0 px-3 focus:z-10"
+          className="flex gap-1 rounded-e-none rounded-s-lg border-r-0 pr-3 pl-0 focus:z-10 !bg-transparent border-transparent !rounded-none border-b border-b-white"
           disabled={disabled}
           type="button"
           variant="outline"
         >
           <FlagComponent country={selectedCountry} countryName={selectedCountry} />
-          <ChevronsUpDown className={cn("-mr-2 size-4 opacity-50", disabled ? "hidden" : "opacity-100")} />
+          <ChevronsUpDown className={cn("-mr-2 size-4 opacity-50 stroke-1", disabled ? "hidden" : "opacity-100")} />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[300px] p-0">
@@ -111,7 +109,7 @@ interface CountrySelectOptionProps extends RPNInput.FlagProps {
 const CountrySelectOption = ({ country, countryName, onChange, selectedCountry }: CountrySelectOptionProps) => {
   return (
     <CommandItem
-      className="gap-2"
+      className="gap-2 !bg-none"
       onSelect={() => {
         onChange(country);
       }}
@@ -119,12 +117,12 @@ const CountrySelectOption = ({ country, countryName, onChange, selectedCountry }
       <FlagComponent country={country} countryName={countryName} />
       <span className="flex-1 text-sm">{countryName}</span>
       <span className="text-sm text-foreground/50">{`+${RPNInput.getCountryCallingCode(country)}`}</span>
-      <CheckIcon className={`ml-auto size-4 ${country === selectedCountry ? "opacity-100" : "opacity-0"}`} />
+      <CheckIcon className={`ml-auto size-4 stroke-1 ${country === selectedCountry ? "opacity-100" : "opacity-0"}`} />
     </CommandItem>
   );
 };
 
-export const FlagComponent = ({ country, countryName }: RPNInput.FlagProps) => {
+const FlagComponent = ({ country, countryName }: RPNInput.FlagProps) => {
   const Flag = flags[country];
 
   return (

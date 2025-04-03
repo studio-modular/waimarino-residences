@@ -88,10 +88,12 @@ export interface Config {
   };
   globals: {
     home: Home;
+    offer: Offer;
     properties: Property;
   };
   globalsSelect: {
     home: HomeSelect<false> | HomeSelect<true>;
+    offer: OfferSelect<false> | OfferSelect<true>;
     properties: PropertiesSelect<false> | PropertiesSelect<true>;
   };
   locale: null;
@@ -1602,6 +1604,63 @@ export interface PropertyBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "offer".
+ */
+export interface Offer {
+  id: number;
+  title: string;
+  asset?:
+    | ({
+        relationTo: 'images';
+        value: number | Image;
+      } | null)
+    | ({
+        relationTo: 'mux-video';
+        value: number | MuxVideo;
+      } | null);
+  headerCopy?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  beforeCopy?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Image;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "properties".
  */
 export interface Property {
@@ -2302,6 +2361,26 @@ export interface PropertyBlockSelect<T extends boolean = true> {
   features?: T;
   id?: T;
   blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "offer_select".
+ */
+export interface OfferSelect<T extends boolean = true> {
+  title?: T;
+  asset?: T;
+  headerCopy?: T;
+  beforeCopy?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

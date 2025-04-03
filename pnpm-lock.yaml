@@ -161,6 +161,9 @@ importers:
       leaflet:
         specifier: ^1.9.4
         version: 1.9.4
+      libphonenumber-js:
+        specifier: ^1.12.6
+        version: 1.12.6
       lucide-react:
         specifier: ^0.486.0
         version: 0.486.0(react@19.1.0)

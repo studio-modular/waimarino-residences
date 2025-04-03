@@ -8,7 +8,7 @@ import { cn } from "../../utils";
 interface UseAutosizeTextAreaProps {
   maxHeight?: number;
   minHeight?: number;
-  textAreaRef: React.MutableRefObject<HTMLTextAreaElement | null>;
+  textAreaRef: React.RefObject<HTMLTextAreaElement | null>;
   triggerAutoSize: string;
 }
 
@@ -41,7 +41,7 @@ export const useAutosizeTextArea = ({
         textAreaElement.style.height = `${scrollHeight + offsetBorder}px`;
       }
     }
-  }, [textAreaRef, triggerAutoSize, init, maxHeight, minHeight]);
+  }, [triggerAutoSize, init, maxHeight, minHeight, textAreaRef]);
 };
 
 export type AutosizeTextAreaRef = {
@@ -92,7 +92,7 @@ export const AutosizeTextarea = React.forwardRef<AutosizeTextAreaRef, AutosizeTe
       <textarea
         {...props}
         className={cn(
-          "flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+          "flex w-full rounded-none border border-white bg-transparent px-3 py-2 text-sm ring-offset-background placeholder:text-white/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
           className,
         )}
         onChange={(e) => {

@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 
+import { ContactForm } from "@/components/contact-form";
+import { S3Image } from "@/components/s3-image";
+import { AspectRatio } from "@/shadcn/components/ui/aspect-ratio";
 import { env } from "@/utilities/env";
 import { payload } from "@/utilities/payload";
+import { RichText } from "@payloadcms/richtext-lexical/react";
 import { unstable_cache } from "next/cache";
 
 const getHomePageData = unstable_cache(
@@ -9,12 +13,12 @@ const getHomePageData = unstable_cache(
     const cms = await payload();
     const data = await cms.findGlobal({
       depth: 4,
-      slug: "home",
+      slug: "offer",
     });
     return data;
   },
-  ["home", "home-page", "all"],
-  { revalidate: 86_400, tags: ["home", "home-page", "all"] },
+  ["offer", "all"],
+  { revalidate: 86_400, tags: ["offer", "all"] },
 );
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -44,13 +48,43 @@ export default async function HomePage() {
   if (!data) return null;
   return (
     <>
-      <div className="sticky top-0 left-0 h-auto">
-        <h1>Hello World</h1>
+      <div className="md:min-h-screen w-full flex flex-col items-center justify-center">
+        <div className="max-w-screen-lg px-8 py-24 w-full flex flex-col sm:flex-row justify-center gap-8 lg:gap-20">
+          <div className="basis-1/3 flex items-center">
+            <AspectRatio className="w-full bg-black" ratio={3 / 4}>
+              {data.asset && data.asset.relationTo === "images" && typeof data.asset.value !== "number" && (
+                <S3Image
+                  image={data.asset.value}
+                  imageProps={{
+                    alt: data.asset.value.alternativeText,
+                    className: "object-cover object-center",
+                    fill: true,
+                    sizes: "(max-width: 768px) 100vw, 40vw",
+                    src: data.asset.value.url!,
+                  }}
+                />
+              )}
+            </AspectRatio>
+          </div>
+          <div className="basis-2/3 text-balance flex-1 flex flex-col gap-4 justify-center max-w-prose">
+            {data.headerCopy && (
+              <RichText
+                className="richtext flex flex-col gap-12 [&_h2]:font-serif [&_h2]:uppercase [&_h2]:text-lg [&_h2]:tracking-wider *:!leading-relaxed *:!font-normal"
+                data={data.headerCopy}
+              />
+            )}
+          </div>
+        </div>
       </div>
-      <div className="relative bg-dg-background z-10 overflow-hidden">
-        <main className="flex flex-col" id="content">
-          {/* <SectionRenderer content={data?.content} /> */}
-        </main>
+      <div className="bg-[#C6C3BD] bg-opacity-45 text-dg-off-black p-8 md:p-20 max-w-screen-md mx-auto md:mb-20">
+        {data.beforeCopy && (
+          <RichText
+            className="richtext flex flex-col gap-8 [&_h2]:font-serif [&_h2]:uppercase [&_h2]:text-lg [&_h2]:tracking-wider *:!leading-relaxed *:!font-normal"
+            data={data.beforeCopy}
+          />
+        )}
+        <ContactForm />
+        {/* <h2 className="text-2xl uppercase tracking-widest font-skia mb-12">Enquire</h2> */}
       </div>
     </>
   );

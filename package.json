@@ -67,6 +67,7 @@
     "graphql": "^16.10.0",
     "klaviyo-api": "^17.0.0",
     "leaflet": "^1.9.4",
+    "libphonenumber-js": "^1.12.6",
     "lucide-react": "^0.486.0",
     "motion": "^12.6.2",
     "next": "15.2.4",

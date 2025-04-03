@@ -13,6 +13,7 @@ import sharp from "sharp";
 import { Images } from "./collections/images";
 import { Users } from "./collections/users";
 import { Home } from "./globals/home";
+import { Offer } from "./globals/offer";
 import { Properties } from "./globals/properties";
 import { env } from "./utilities/env";
 
@@ -33,7 +34,7 @@ export default buildConfig({
     },
   }),
   editor: lexicalEditor(),
-  globals: [Home, Properties],
+  globals: [Home, Offer, Properties],
   plugins: [
     computeBlurhash({
       collections: ["images"],
@@ -65,6 +66,7 @@ export default buildConfig({
       },
       globals: [
         "home",
+        "offer",
         "expeditions-pages",
         "experience",
         "properties",
