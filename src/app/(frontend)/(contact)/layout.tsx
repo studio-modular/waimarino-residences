@@ -9,7 +9,7 @@ export default function ContactLayout({
 }>) {
   return (
     <>
-      <NavigationBar className="!text-black dark:!text-white from-transparent" />
+      <NavigationBar className="!text-black from-transparent" />
       {children}
     </>
   );

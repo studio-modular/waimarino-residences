@@ -14,8 +14,8 @@ import { Logo } from "./logo";
 export function MobileNavigationBar({ className }: { className?: string }) {
   const [open, setOpen] = useState<boolean>(false);
   return (
-    <div className="block lg:hidden">
-      <div className="fixed left-8 z-30 top-8 text-white">
+    <div className={`${className} block lg:hidden`}>
+      <div className="fixed left-8 z-30 top-8 text-inherit">
         <Link href="/">
           <Logo height="30px" width="100%" />
         </Link>
@@ -84,7 +84,7 @@ export default function NavigationBar({ className }: { className?: string }) {
     <>
       <MobileNavigationBar className={className} />
       <header
-        className={`hidden lg:flex fixed bg-gradient-to-b from-black/10 to-black/0 !border-l-transparent [&_a]!text-white box-border top-0 font-skia tracking-wide left-0 w-full p-6 lg:p-8 text-white z-30 items-start ${className ?? ""}`}
+        className={`hidden lg:flex fixed bg-gradient-to-b from-black/10 to-black/0 !border-l-transparent box-border top-0 font-skia tracking-wide left-0 w-full p-6 lg:p-8 text-white z-30 items-start ${className ?? ""}`}
       >
         <nav className="flex-1 flex gap-8 lg:gap-12 items-start text-sm h-full uppercase tracking-wider">
           <Link
@@ -102,7 +102,7 @@ export default function NavigationBar({ className }: { className?: string }) {
           </Link>
         </nav>
         <div>
-          <Link href="/">
+          <Link className="text-current" href="/">
             <Logo height="42px" width="100%" />
           </Link>
         </div>

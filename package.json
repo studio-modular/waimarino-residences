@@ -12,6 +12,7 @@
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation dotenv -- payload generate:types",
     "lint": "cross-env NODE_OPTIONS=--no-deprecation dotenv -- next lint --fix",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation dotenv -- payload",
+    "payload:production": "cross-env NODE_OPTIONS=--no-deprecation dotenv -e .env.production -- payload",
     "start": "cross-env NODE_OPTIONS=--no-deprecation dotenv -- next start",
     "tsc": "cross-env NODE_OPTIONS=--no-deprecation dotenv -- tsc --noEmit"
   },

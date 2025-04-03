@@ -8,7 +8,6 @@ import { Input } from "@/shadcn/components/ui/input";
 import { PhoneInput } from "@/shadcn/components/ui/phone-input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
-import { sendGTMEvent } from "@next/third-parties/google";
 import { toast } from "sonner";
 
 import { AutosizeTextarea } from "../shadcn/components/ui/autosize-textarea";
@@ -23,8 +22,7 @@ export function ContactForm() {
         onError: () => {
           toast.error("Something went wrong!");
         },
-        onSuccess: ({ input }) => {
-          sendGTMEvent({ event: "ENQUIRE_SUBMISSION", value: input.email });
+        onSuccess: ({}) => {
           toast.success("You have successfully submitted your request!");
           resetFormAndAction();
         },

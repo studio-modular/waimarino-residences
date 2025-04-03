@@ -6,7 +6,6 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/shadcn/co
 import { Input } from "@/shadcn/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
-import { sendGTMEvent } from "@next/third-parties/google";
 import { toast } from "sonner";
 
 import { MailingListSchema } from "../schemas/mailing-list";
@@ -20,8 +19,7 @@ export default function MailingList() {
         onError: () => {
           toast.error("Something went wrong!");
         },
-        onSuccess: ({ input }) => {
-          sendGTMEvent({ event: "MAILING_LIST_SIGN_UP", value: input.email });
+        onSuccess: ({}) => {
           toast.success("You have successfully signed up!");
           resetFormAndAction();
         },

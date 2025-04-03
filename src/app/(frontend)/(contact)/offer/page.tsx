@@ -79,7 +79,7 @@ export default async function HomePage() {
       <div className="bg-[#C6C3BD] bg-opacity-45 text-dg-off-black p-8 md:p-20 max-w-screen-md mx-auto md:mb-20">
         {data.beforeCopy && (
           <RichText
-            className="richtext flex flex-col gap-8 [&_h2]:font-serif [&_h2]:uppercase [&_h2]:text-lg [&_h2]:tracking-wider *:!leading-relaxed *:!font-normal"
+            className="richtext flex flex-col mb-10 gap-8 [&_h2]:font-serif [&_h2]:uppercase [&_h2]:text-lg [&_h2]:tracking-wider *:!leading-relaxed *:!font-normal"
             data={data.beforeCopy}
           />
         )}
