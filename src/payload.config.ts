@@ -1,3 +1,9 @@
+import { Images } from "@/collections/images";
+import { Users } from "@/collections/users";
+import { Home } from "@/globals/home";
+import { Offer } from "@/globals/offer";
+import { Properties } from "@/globals/properties";
+import { env } from "@/utilities/env";
 import { muxVideoPlugin } from "@oversightstudio/mux-video";
 // storage-adapter-import-placeholder
 import { postgresAdapter } from "@payloadcms/db-postgres";
@@ -9,13 +15,6 @@ import { fileURLToPath } from "node:url";
 import { buildConfig } from "payload";
 import computeBlurhash from "payload-blurhash-plugin";
 import sharp from "sharp";
-
-import { Images } from "./collections/images";
-import { Users } from "./collections/users";
-import { Home } from "./globals/home";
-import { Offer } from "./globals/offer";
-import { Properties } from "./globals/properties";
-import { env } from "./utilities/env";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);

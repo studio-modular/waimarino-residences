@@ -6,7 +6,7 @@ import { AspectRatio } from "@/shadcn/components/ui/aspect-ratio";
 import "react-medium-image-zoom/dist/styles.css";
 import Zoom from "react-medium-image-zoom";
 
-export function SectionMediaRenderer({ asset, description, isFullWidth, link, linkText }: SectionMedia) {
+export function SectionMediaRenderer({ asset, isFullWidth, link, linkText }: SectionMedia) {
   return (
     <section className="mt-8 md:mt-0 pb-8 md:pb-20">
       <div className={`${isFullWidth ? "w-full" : "md:w-9/12 md:mx-auto"}`}>
