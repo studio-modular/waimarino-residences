@@ -6,23 +6,101 @@
  * and re-run `payload generate:types` to regenerate this file.
  */
 
+/**
+ * Supported timezones in IANA format.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "supportedTimezones".
+ */
+export type SupportedTimezones =
+  | 'Pacific/Midway'
+  | 'Pacific/Niue'
+  | 'Pacific/Honolulu'
+  | 'Pacific/Rarotonga'
+  | 'America/Anchorage'
+  | 'Pacific/Gambier'
+  | 'America/Los_Angeles'
+  | 'America/Tijuana'
+  | 'America/Denver'
+  | 'America/Phoenix'
+  | 'America/Chicago'
+  | 'America/Guatemala'
+  | 'America/New_York'
+  | 'America/Bogota'
+  | 'America/Caracas'
+  | 'America/Santiago'
+  | 'America/Buenos_Aires'
+  | 'America/Sao_Paulo'
+  | 'Atlantic/South_Georgia'
+  | 'Atlantic/Azores'
+  | 'Atlantic/Cape_Verde'
+  | 'Europe/London'
+  | 'Europe/Berlin'
+  | 'Africa/Lagos'
+  | 'Europe/Athens'
+  | 'Africa/Cairo'
+  | 'Europe/Moscow'
+  | 'Asia/Riyadh'
+  | 'Asia/Dubai'
+  | 'Asia/Baku'
+  | 'Asia/Karachi'
+  | 'Asia/Tashkent'
+  | 'Asia/Calcutta'
+  | 'Asia/Dhaka'
+  | 'Asia/Almaty'
+  | 'Asia/Jakarta'
+  | 'Asia/Bangkok'
+  | 'Asia/Shanghai'
+  | 'Asia/Singapore'
+  | 'Asia/Tokyo'
+  | 'Asia/Seoul'
+  | 'Australia/Brisbane'
+  | 'Australia/Sydney'
+  | 'Pacific/Guam'
+  | 'Pacific/Noumea'
+  | 'Pacific/Auckland'
+  | 'Pacific/Fiji';
+
 export interface Config {
   auth: {
     users: UserAuthOperations;
   };
+  blocks: {};
   collections: {
     users: User;
-    media: Media;
+    images: Image;
+    'mux-video': MuxVideo;
+    'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  db: {
-    defaultIDType: string;
+  collectionsJoins: {};
+  collectionsSelect: {
+    users: UsersSelect<false> | UsersSelect<true>;
+    images: ImagesSelect<false> | ImagesSelect<true>;
+    'mux-video': MuxVideoSelect<false> | MuxVideoSelect<true>;
+    'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
+    'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
+    'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
-  globals: {};
+  db: {
+    defaultIDType: number;
+  };
+  globals: {
+    home: Home;
+    properties: Property;
+  };
+  globalsSelect: {
+    home: HomeSelect<false> | HomeSelect<true>;
+    properties: PropertiesSelect<false> | PropertiesSelect<true>;
+  };
   locale: null;
   user: User & {
     collection: 'users';
+  };
+  jobs: {
+    tasks: unknown;
+    workflows: unknown;
   };
 }
 export interface UserAuthOperations {
@@ -48,7 +126,7 @@ export interface UserAuthOperations {
  * via the `definition` "users".
  */
 export interface User {
-  id: string;
+  id: number;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -62,11 +140,13 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
+ * via the `definition` "images".
  */
-export interface Media {
-  id: string;
-  alt: string;
+export interface Image {
+  id: number;
+  alternativeText: string;
+  caption?: string | null;
+  blurhash?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -78,16 +158,117 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    small?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    medium?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    large?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    'extra-large'?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "mux-video".
+ */
+export interface MuxVideo {
+  id: number;
+  /**
+   * A unique title for this video that will help you identify it later.
+   */
+  title: string;
+  assetId?: string | null;
+  duration?: number | null;
+  /**
+   * Pick a timestamp (in seconds) from the video to be used as the poster image. When unset, defaults to the middle of the video.
+   */
+  posterTimestamp?: number | null;
+  aspectRatio?: string | null;
+  maxWidth?: number | null;
+  maxHeight?: number | null;
+  playbackOptions?:
+    | {
+        playbackId?: string | null;
+        playbackPolicy?: ('signed' | 'public') | null;
+        playbackUrl?: string | null;
+        posterUrl?: string | null;
+        gifUrl?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-locked-documents".
+ */
+export interface PayloadLockedDocument {
+  id: number;
+  document?:
+    | ({
+        relationTo: 'users';
+        value: number | User;
+      } | null)
+    | ({
+        relationTo: 'images';
+        value: number | Image;
+      } | null)
+    | ({
+        relationTo: 'mux-video';
+        value: number | MuxVideo;
+      } | null);
+  globalSlug?: string | null;
+  user: {
+    relationTo: 'users';
+    value: number | User;
+  };
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: string;
+  id: number;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   key?: string | null;
   value?:
@@ -107,11 +288,2077 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: string;
+  id: number;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users_select".
+ */
+export interface UsersSelect<T extends boolean = true> {
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "images_select".
+ */
+export interface ImagesSelect<T extends boolean = true> {
+  alternativeText?: T;
+  caption?: T;
+  blurhash?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+  sizes?:
+    | T
+    | {
+        thumbnail?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        small?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        medium?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        large?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        'extra-large'?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "mux-video_select".
+ */
+export interface MuxVideoSelect<T extends boolean = true> {
+  title?: T;
+  assetId?: T;
+  duration?: T;
+  posterTimestamp?: T;
+  aspectRatio?: T;
+  maxWidth?: T;
+  maxHeight?: T;
+  playbackOptions?:
+    | T
+    | {
+        playbackId?: T;
+        playbackPolicy?: T;
+        playbackUrl?: T;
+        posterUrl?: T;
+        gifUrl?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-locked-documents_select".
+ */
+export interface PayloadLockedDocumentsSelect<T extends boolean = true> {
+  document?: T;
+  globalSlug?: T;
+  user?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-preferences_select".
+ */
+export interface PayloadPreferencesSelect<T extends boolean = true> {
+  user?: T;
+  key?: T;
+  value?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-migrations_select".
+ */
+export interface PayloadMigrationsSelect<T extends boolean = true> {
+  name?: T;
+  batch?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home".
+ */
+export interface Home {
+  id: number;
+  title: string;
+  asset?:
+    | ({
+        relationTo: 'images';
+        value: number | Image;
+      } | null)
+    | ({
+        relationTo: 'mux-video';
+        value: number | MuxVideo;
+      } | null);
+  arrowText?: string | null;
+  content?:
+    | (
+        | Section01Block
+        | Section02Block
+        | Section03Block
+        | Section04Block
+        | Section05Block
+        | Section06Block
+        | Section07Block
+        | Section08Block
+        | Section09Block
+        | Section10Block
+        | Section11Block
+        | Section12Block
+        | Section13Block
+        | Section14Block
+        | Section15Block
+        | Section16Block
+        | Section17Block
+        | Section18Block
+        | Section19Block
+        | Section20Block
+        | Section21Block
+        | Section22Block
+        | Section23Block
+        | Section24Block
+        | SectionSeparatorBlock
+        | FullScreenBlock
+        | CarouselBlock
+        | QuestionsBlock
+        | TestimonialBlock
+        | HighlightsBlock
+        | SectionCarouselWithThumbnail
+        | QuoteBlock
+        | SectionMedia
+        | PropertyBlock
+      )[]
+    | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Image;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section01Block".
+ */
+export interface Section01Block {
+  heading: string;
+  subheading: string;
+  mediaBlockOne: (SectionCarousel | SectionMedia)[];
+  mediaBlockTwo: (SectionCarousel | SectionMedia)[];
+  copyOne: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'section-01-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SectionCarousel".
+ */
+export interface SectionCarousel {
+  slides: {
+    asset:
+      | {
+          relationTo: 'images';
+          value: number | Image;
+        }
+      | {
+          relationTo: 'mux-video';
+          value: number | MuxVideo;
+        };
+    description?: string | null;
+    isFullWidth?: boolean | null;
+    link?: string | null;
+    linkText?: string | null;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'section-carousel';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SectionMedia".
+ */
+export interface SectionMedia {
+  asset:
+    | {
+        relationTo: 'images';
+        value: number | Image;
+      }
+    | {
+        relationTo: 'mux-video';
+        value: number | MuxVideo;
+      };
+  description?: string | null;
+  isFullWidth?: boolean | null;
+  link?: string | null;
+  linkText?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'section-media';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section02Block".
+ */
+export interface Section02Block {
+  heading: string;
+  mediaBlockOne: (SectionCarousel | SectionMedia)[];
+  copyOne: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'section-02-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section03Block".
+ */
+export interface Section03Block {
+  heading: string;
+  mediaBlockOne: (SectionCarousel | SectionMedia)[];
+  copyOne: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'section-03-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section04Block".
+ */
+export interface Section04Block {
+  mediaBlockOne: (SectionCarousel | SectionMedia)[];
+  copyOne: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  copyTwo: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'section-04-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section05Block".
+ */
+export interface Section05Block {
+  heading: string;
+  mediaBlockOne: (SectionCarousel | SectionMedia)[];
+  copyOne: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  copyTwo: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'section-05-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section06Block".
+ */
+export interface Section06Block {
+  mediaBlockOne: (SectionCarousel | SectionMedia)[];
+  copyOne: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  copyTwo: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'section-06-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section07Block".
+ */
+export interface Section07Block {
+  heading: string;
+  mediaBlockOne: (SectionCarousel | SectionMedia)[];
+  copyOne: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  copyTwo: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'section-07-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section08Block".
+ */
+export interface Section08Block {
+  heading: string;
+  mediaBlockOne: (SectionCarousel | SectionMedia)[];
+  copyOne: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  copyTwo: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'section-08-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section09Block".
+ */
+export interface Section09Block {
+  heading: string;
+  copyOne: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  mediaBlockOne: (SectionCarousel | SectionMedia)[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'section-09-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section10Block".
+ */
+export interface Section10Block {
+  heading: string;
+  copyOne: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  copyTwo: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  mediaBlockOne: (SectionCarousel | SectionMedia)[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'section-10-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section11Block".
+ */
+export interface Section11Block {
+  slides: {
+    asset:
+      | {
+          relationTo: 'images';
+          value: number | Image;
+        }
+      | {
+          relationTo: 'mux-video';
+          value: number | MuxVideo;
+        };
+    description?: string | null;
+    isFullWidth?: boolean | null;
+    link?: string | null;
+    linkText?: string | null;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'section-11-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section12Block".
+ */
+export interface Section12Block {
+  heading: string;
+  copyOne: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'section-12-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section13Block".
+ */
+export interface Section13Block {
+  panels: {
+    heading?: string | null;
+    link?: string | null;
+    title?: string | null;
+    nextToTitle?: string | null;
+    byline?: string | null;
+    items?:
+      | {
+          label?: string | null;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    moreDetails?: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'section-13-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section14Block".
+ */
+export interface Section14Block {
+  slides: {
+    asset:
+      | {
+          relationTo: 'images';
+          value: number | Image;
+        }
+      | {
+          relationTo: 'mux-video';
+          value: number | MuxVideo;
+        };
+    description?: string | null;
+    isFullWidth?: boolean | null;
+    link?: string | null;
+    linkText?: string | null;
+    id?: string | null;
+  }[];
+  copyOne: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'section-14-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section15Block".
+ */
+export interface Section15Block {
+  slides: {
+    asset:
+      | {
+          relationTo: 'images';
+          value: number | Image;
+        }
+      | {
+          relationTo: 'mux-video';
+          value: number | MuxVideo;
+        };
+    description?: string | null;
+    isFullWidth?: boolean | null;
+    link?: string | null;
+    linkText?: string | null;
+    id?: string | null;
+  }[];
+  heading: string;
+  copyOne: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  copyTwo: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'section-15-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section16Block".
+ */
+export interface Section16Block {
+  heading: string;
+  copyOne: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  mediaBlockOne: (SectionCarousel | SectionMedia)[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'section-16-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section17Block".
+ */
+export interface Section17Block {
+  heading: string;
+  link: string;
+  linkText: string;
+  milestones?:
+    | {
+        title: string;
+        content: {
+          root: {
+            type: string;
+            children: {
+              type: string;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'section-17-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section18Block".
+ */
+export interface Section18Block {
+  panels?:
+    | {
+        slides: {
+          asset:
+            | {
+                relationTo: 'images';
+                value: number | Image;
+              }
+            | {
+                relationTo: 'mux-video';
+                value: number | MuxVideo;
+              };
+          description?: string | null;
+          isFullWidth?: boolean | null;
+          link?: string | null;
+          linkText?: string | null;
+          id?: string | null;
+        }[];
+        title: string;
+        subtitle: string;
+        startingPrice: string;
+        copyOne: {
+          root: {
+            type: string;
+            children: {
+              type: string;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        exploreLink: string;
+        bookingLink: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'section-18-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section19Block".
+ */
+export interface Section19Block {
+  title: string;
+  content: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'section-19-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section20Block".
+ */
+export interface Section20Block {
+  mediaBlockOne: (SectionCarousel | SectionMedia)[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'section-20-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section21Block".
+ */
+export interface Section21Block {
+  copyOne: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  copyTwo: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  mediaBlockOne: (SectionCarousel | SectionMedia)[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'section-21-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section22Block".
+ */
+export interface Section22Block {
+  copyOne: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  copyTwo: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  mediaBlockOne: (SectionCarousel | SectionMedia)[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'section-22-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section23Block".
+ */
+export interface Section23Block {
+  heading: string;
+  copyOne: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  copyTwo: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  mediaBlockOne: (SectionCarousel | SectionMedia)[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'section-23-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section24Block".
+ */
+export interface Section24Block {
+  slides: {
+    asset:
+      | {
+          relationTo: 'images';
+          value: number | Image;
+        }
+      | {
+          relationTo: 'mux-video';
+          value: number | MuxVideo;
+        };
+    description?: string | null;
+    isFullWidth?: boolean | null;
+    link?: string | null;
+    linkText?: string | null;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'section-24-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SectionSeparatorBlock".
+ */
+export interface SectionSeparatorBlock {
+  isFullWidth?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'section-separator-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FullScreenBlock".
+ */
+export interface FullScreenBlock {
+  mediaBlockOne: (SectionCarousel | SectionMedia)[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'full-screen-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CarouselBlock".
+ */
+export interface CarouselBlock {
+  slides: {
+    asset:
+      | {
+          relationTo: 'images';
+          value: number | Image;
+        }
+      | {
+          relationTo: 'mux-video';
+          value: number | MuxVideo;
+        };
+    description?: string | null;
+    isFullWidth?: boolean | null;
+    link?: string | null;
+    linkText?: string | null;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'carousel-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "QuestionsBlock".
+ */
+export interface QuestionsBlock {
+  questions?:
+    | {
+        question: string;
+        answer: {
+          root: {
+            type: string;
+            children: {
+              type: string;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'questions-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialBlock".
+ */
+export interface TestimonialBlock {
+  testimonials?:
+    | {
+        heading?: string | null;
+        content: string;
+        author?: string | null;
+        link?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'testimonial-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HighlightsBlock".
+ */
+export interface HighlightsBlock {
+  heading?: string | null;
+  highlights: {
+    highlight: string;
+    description: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    id?: string | null;
+  }[];
+  asset:
+    | {
+        relationTo: 'images';
+        value: number | Image;
+      }
+    | {
+        relationTo: 'mux-video';
+        value: number | MuxVideo;
+      };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'highlights';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SectionCarouselWithThumbnail".
+ */
+export interface SectionCarouselWithThumbnail {
+  slides: {
+    asset:
+      | {
+          relationTo: 'images';
+          value: number | Image;
+        }
+      | {
+          relationTo: 'mux-video';
+          value: number | MuxVideo;
+        };
+    description?: string | null;
+    isFullWidth?: boolean | null;
+    link?: string | null;
+    linkText?: string | null;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'section-carousel-with-thumbnail';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "QuoteBlock".
+ */
+export interface QuoteBlock {
+  quote?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  author?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'quote';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PropertyBlock".
+ */
+export interface PropertyBlock {
+  image: number | Image;
+  logo: number | Image;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  features?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'property-block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "properties".
+ */
+export interface Property {
+  id: number;
+  title: string;
+  asset?:
+    | ({
+        relationTo: 'images';
+        value: number | Image;
+      } | null)
+    | ({
+        relationTo: 'mux-video';
+        value: number | MuxVideo;
+      } | null);
+  markerText?: string | null;
+  content?:
+    | (
+        | Section01Block
+        | Section02Block
+        | Section03Block
+        | Section04Block
+        | Section05Block
+        | Section06Block
+        | Section07Block
+        | Section08Block
+        | Section09Block
+        | Section10Block
+        | Section11Block
+        | Section12Block
+        | Section13Block
+        | Section14Block
+        | Section15Block
+        | Section16Block
+        | Section17Block
+        | Section18Block
+        | Section19Block
+        | Section20Block
+        | Section21Block
+        | Section22Block
+        | Section23Block
+        | Section24Block
+        | SectionSeparatorBlock
+        | FullScreenBlock
+        | CarouselBlock
+        | QuestionsBlock
+        | TestimonialBlock
+        | HighlightsBlock
+        | SectionCarouselWithThumbnail
+        | QuoteBlock
+        | SectionMedia
+        | PropertyBlock
+      )[]
+    | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Image;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home_select".
+ */
+export interface HomeSelect<T extends boolean = true> {
+  title?: T;
+  asset?: T;
+  arrowText?: T;
+  content?:
+    | T
+    | {
+        'section-01-block'?: T | Section01BlockSelect<T>;
+        'section-02-block'?: T | Section02BlockSelect<T>;
+        'section-03-block'?: T | Section03BlockSelect<T>;
+        'section-04-block'?: T | Section04BlockSelect<T>;
+        'section-05-block'?: T | Section05BlockSelect<T>;
+        'section-06-block'?: T | Section06BlockSelect<T>;
+        'section-07-block'?: T | Section07BlockSelect<T>;
+        'section-08-block'?: T | Section08BlockSelect<T>;
+        'section-09-block'?: T | Section09BlockSelect<T>;
+        'section-10-block'?: T | Section10BlockSelect<T>;
+        'section-11-block'?: T | Section11BlockSelect<T>;
+        'section-12-block'?: T | Section12BlockSelect<T>;
+        'section-13-block'?: T | Section13BlockSelect<T>;
+        'section-14-block'?: T | Section14BlockSelect<T>;
+        'section-15-block'?: T | Section15BlockSelect<T>;
+        'section-16-block'?: T | Section16BlockSelect<T>;
+        'section-17-block'?: T | Section17BlockSelect<T>;
+        'section-18-block'?: T | Section18BlockSelect<T>;
+        'section-19-block'?: T | Section19BlockSelect<T>;
+        'section-20-block'?: T | Section20BlockSelect<T>;
+        'section-21-block'?: T | Section21BlockSelect<T>;
+        'section-22-block'?: T | Section22BlockSelect<T>;
+        'section-23-block'?: T | Section23BlockSelect<T>;
+        'section-24-block'?: T | Section24BlockSelect<T>;
+        'section-separator-block'?: T | SectionSeparatorBlockSelect<T>;
+        'full-screen-block'?: T | FullScreenBlockSelect<T>;
+        'carousel-block'?: T | CarouselBlockSelect<T>;
+        'questions-block'?: T | QuestionsBlockSelect<T>;
+        'testimonial-block'?: T | TestimonialBlockSelect<T>;
+        highlights?: T | HighlightsBlockSelect<T>;
+        'section-carousel-with-thumbnail'?: T | SectionCarouselWithThumbnailSelect<T>;
+        quote?: T | QuoteBlockSelect<T>;
+        'section-media'?: T | SectionMediaSelect<T>;
+        'property-block'?: T | PropertyBlockSelect<T>;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section01Block_select".
+ */
+export interface Section01BlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  mediaBlockOne?:
+    | T
+    | {
+        'section-carousel'?: T | SectionCarouselSelect<T>;
+        'section-media'?: T | SectionMediaSelect<T>;
+      };
+  mediaBlockTwo?:
+    | T
+    | {
+        'section-carousel'?: T | SectionCarouselSelect<T>;
+        'section-media'?: T | SectionMediaSelect<T>;
+      };
+  copyOne?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SectionCarousel_select".
+ */
+export interface SectionCarouselSelect<T extends boolean = true> {
+  slides?:
+    | T
+    | {
+        asset?: T;
+        description?: T;
+        isFullWidth?: T;
+        link?: T;
+        linkText?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SectionMedia_select".
+ */
+export interface SectionMediaSelect<T extends boolean = true> {
+  asset?: T;
+  description?: T;
+  isFullWidth?: T;
+  link?: T;
+  linkText?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section02Block_select".
+ */
+export interface Section02BlockSelect<T extends boolean = true> {
+  heading?: T;
+  mediaBlockOne?:
+    | T
+    | {
+        'section-carousel'?: T | SectionCarouselSelect<T>;
+        'section-media'?: T | SectionMediaSelect<T>;
+      };
+  copyOne?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section03Block_select".
+ */
+export interface Section03BlockSelect<T extends boolean = true> {
+  heading?: T;
+  mediaBlockOne?:
+    | T
+    | {
+        'section-carousel'?: T | SectionCarouselSelect<T>;
+        'section-media'?: T | SectionMediaSelect<T>;
+      };
+  copyOne?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section04Block_select".
+ */
+export interface Section04BlockSelect<T extends boolean = true> {
+  mediaBlockOne?:
+    | T
+    | {
+        'section-carousel'?: T | SectionCarouselSelect<T>;
+        'section-media'?: T | SectionMediaSelect<T>;
+      };
+  copyOne?: T;
+  copyTwo?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section05Block_select".
+ */
+export interface Section05BlockSelect<T extends boolean = true> {
+  heading?: T;
+  mediaBlockOne?:
+    | T
+    | {
+        'section-carousel'?: T | SectionCarouselSelect<T>;
+        'section-media'?: T | SectionMediaSelect<T>;
+      };
+  copyOne?: T;
+  copyTwo?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section06Block_select".
+ */
+export interface Section06BlockSelect<T extends boolean = true> {
+  mediaBlockOne?:
+    | T
+    | {
+        'section-carousel'?: T | SectionCarouselSelect<T>;
+        'section-media'?: T | SectionMediaSelect<T>;
+      };
+  copyOne?: T;
+  copyTwo?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section07Block_select".
+ */
+export interface Section07BlockSelect<T extends boolean = true> {
+  heading?: T;
+  mediaBlockOne?:
+    | T
+    | {
+        'section-carousel'?: T | SectionCarouselSelect<T>;
+        'section-media'?: T | SectionMediaSelect<T>;
+      };
+  copyOne?: T;
+  copyTwo?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section08Block_select".
+ */
+export interface Section08BlockSelect<T extends boolean = true> {
+  heading?: T;
+  mediaBlockOne?:
+    | T
+    | {
+        'section-carousel'?: T | SectionCarouselSelect<T>;
+        'section-media'?: T | SectionMediaSelect<T>;
+      };
+  copyOne?: T;
+  copyTwo?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section09Block_select".
+ */
+export interface Section09BlockSelect<T extends boolean = true> {
+  heading?: T;
+  copyOne?: T;
+  mediaBlockOne?:
+    | T
+    | {
+        'section-carousel'?: T | SectionCarouselSelect<T>;
+        'section-media'?: T | SectionMediaSelect<T>;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section10Block_select".
+ */
+export interface Section10BlockSelect<T extends boolean = true> {
+  heading?: T;
+  copyOne?: T;
+  copyTwo?: T;
+  mediaBlockOne?:
+    | T
+    | {
+        'section-carousel'?: T | SectionCarouselSelect<T>;
+        'section-media'?: T | SectionMediaSelect<T>;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section11Block_select".
+ */
+export interface Section11BlockSelect<T extends boolean = true> {
+  slides?:
+    | T
+    | {
+        asset?: T;
+        description?: T;
+        isFullWidth?: T;
+        link?: T;
+        linkText?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section12Block_select".
+ */
+export interface Section12BlockSelect<T extends boolean = true> {
+  heading?: T;
+  copyOne?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section13Block_select".
+ */
+export interface Section13BlockSelect<T extends boolean = true> {
+  panels?:
+    | T
+    | {
+        heading?: T;
+        link?: T;
+        title?: T;
+        nextToTitle?: T;
+        byline?: T;
+        items?:
+          | T
+          | {
+              label?: T;
+              description?: T;
+              id?: T;
+            };
+        moreDetails?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section14Block_select".
+ */
+export interface Section14BlockSelect<T extends boolean = true> {
+  slides?:
+    | T
+    | {
+        asset?: T;
+        description?: T;
+        isFullWidth?: T;
+        link?: T;
+        linkText?: T;
+        id?: T;
+      };
+  copyOne?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section15Block_select".
+ */
+export interface Section15BlockSelect<T extends boolean = true> {
+  slides?:
+    | T
+    | {
+        asset?: T;
+        description?: T;
+        isFullWidth?: T;
+        link?: T;
+        linkText?: T;
+        id?: T;
+      };
+  heading?: T;
+  copyOne?: T;
+  copyTwo?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section16Block_select".
+ */
+export interface Section16BlockSelect<T extends boolean = true> {
+  heading?: T;
+  copyOne?: T;
+  mediaBlockOne?:
+    | T
+    | {
+        'section-carousel'?: T | SectionCarouselSelect<T>;
+        'section-media'?: T | SectionMediaSelect<T>;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section17Block_select".
+ */
+export interface Section17BlockSelect<T extends boolean = true> {
+  heading?: T;
+  link?: T;
+  linkText?: T;
+  milestones?:
+    | T
+    | {
+        title?: T;
+        content?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section18Block_select".
+ */
+export interface Section18BlockSelect<T extends boolean = true> {
+  panels?:
+    | T
+    | {
+        slides?:
+          | T
+          | {
+              asset?: T;
+              description?: T;
+              isFullWidth?: T;
+              link?: T;
+              linkText?: T;
+              id?: T;
+            };
+        title?: T;
+        subtitle?: T;
+        startingPrice?: T;
+        copyOne?: T;
+        exploreLink?: T;
+        bookingLink?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section19Block_select".
+ */
+export interface Section19BlockSelect<T extends boolean = true> {
+  title?: T;
+  content?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section20Block_select".
+ */
+export interface Section20BlockSelect<T extends boolean = true> {
+  mediaBlockOne?:
+    | T
+    | {
+        'section-carousel'?: T | SectionCarouselSelect<T>;
+        'section-media'?: T | SectionMediaSelect<T>;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section21Block_select".
+ */
+export interface Section21BlockSelect<T extends boolean = true> {
+  copyOne?: T;
+  copyTwo?: T;
+  mediaBlockOne?:
+    | T
+    | {
+        'section-carousel'?: T | SectionCarouselSelect<T>;
+        'section-media'?: T | SectionMediaSelect<T>;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section22Block_select".
+ */
+export interface Section22BlockSelect<T extends boolean = true> {
+  copyOne?: T;
+  copyTwo?: T;
+  mediaBlockOne?:
+    | T
+    | {
+        'section-carousel'?: T | SectionCarouselSelect<T>;
+        'section-media'?: T | SectionMediaSelect<T>;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section23Block_select".
+ */
+export interface Section23BlockSelect<T extends boolean = true> {
+  heading?: T;
+  copyOne?: T;
+  copyTwo?: T;
+  mediaBlockOne?:
+    | T
+    | {
+        'section-carousel'?: T | SectionCarouselSelect<T>;
+        'section-media'?: T | SectionMediaSelect<T>;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Section24Block_select".
+ */
+export interface Section24BlockSelect<T extends boolean = true> {
+  slides?:
+    | T
+    | {
+        asset?: T;
+        description?: T;
+        isFullWidth?: T;
+        link?: T;
+        linkText?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SectionSeparatorBlock_select".
+ */
+export interface SectionSeparatorBlockSelect<T extends boolean = true> {
+  isFullWidth?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FullScreenBlock_select".
+ */
+export interface FullScreenBlockSelect<T extends boolean = true> {
+  mediaBlockOne?:
+    | T
+    | {
+        'section-carousel'?: T | SectionCarouselSelect<T>;
+        'section-media'?: T | SectionMediaSelect<T>;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CarouselBlock_select".
+ */
+export interface CarouselBlockSelect<T extends boolean = true> {
+  slides?:
+    | T
+    | {
+        asset?: T;
+        description?: T;
+        isFullWidth?: T;
+        link?: T;
+        linkText?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "QuestionsBlock_select".
+ */
+export interface QuestionsBlockSelect<T extends boolean = true> {
+  questions?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialBlock_select".
+ */
+export interface TestimonialBlockSelect<T extends boolean = true> {
+  testimonials?:
+    | T
+    | {
+        heading?: T;
+        content?: T;
+        author?: T;
+        link?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HighlightsBlock_select".
+ */
+export interface HighlightsBlockSelect<T extends boolean = true> {
+  heading?: T;
+  highlights?:
+    | T
+    | {
+        highlight?: T;
+        description?: T;
+        id?: T;
+      };
+  asset?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SectionCarouselWithThumbnail_select".
+ */
+export interface SectionCarouselWithThumbnailSelect<T extends boolean = true> {
+  slides?:
+    | T
+    | {
+        asset?: T;
+        description?: T;
+        isFullWidth?: T;
+        link?: T;
+        linkText?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "QuoteBlock_select".
+ */
+export interface QuoteBlockSelect<T extends boolean = true> {
+  quote?: T;
+  author?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PropertyBlock_select".
+ */
+export interface PropertyBlockSelect<T extends boolean = true> {
+  image?: T;
+  logo?: T;
+  description?: T;
+  features?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "properties_select".
+ */
+export interface PropertiesSelect<T extends boolean = true> {
+  title?: T;
+  asset?: T;
+  markerText?: T;
+  content?:
+    | T
+    | {
+        'section-01-block'?: T | Section01BlockSelect<T>;
+        'section-02-block'?: T | Section02BlockSelect<T>;
+        'section-03-block'?: T | Section03BlockSelect<T>;
+        'section-04-block'?: T | Section04BlockSelect<T>;
+        'section-05-block'?: T | Section05BlockSelect<T>;
+        'section-06-block'?: T | Section06BlockSelect<T>;
+        'section-07-block'?: T | Section07BlockSelect<T>;
+        'section-08-block'?: T | Section08BlockSelect<T>;
+        'section-09-block'?: T | Section09BlockSelect<T>;
+        'section-10-block'?: T | Section10BlockSelect<T>;
+        'section-11-block'?: T | Section11BlockSelect<T>;
+        'section-12-block'?: T | Section12BlockSelect<T>;
+        'section-13-block'?: T | Section13BlockSelect<T>;
+        'section-14-block'?: T | Section14BlockSelect<T>;
+        'section-15-block'?: T | Section15BlockSelect<T>;
+        'section-16-block'?: T | Section16BlockSelect<T>;
+        'section-17-block'?: T | Section17BlockSelect<T>;
+        'section-18-block'?: T | Section18BlockSelect<T>;
+        'section-19-block'?: T | Section19BlockSelect<T>;
+        'section-20-block'?: T | Section20BlockSelect<T>;
+        'section-21-block'?: T | Section21BlockSelect<T>;
+        'section-22-block'?: T | Section22BlockSelect<T>;
+        'section-23-block'?: T | Section23BlockSelect<T>;
+        'section-24-block'?: T | Section24BlockSelect<T>;
+        'section-separator-block'?: T | SectionSeparatorBlockSelect<T>;
+        'full-screen-block'?: T | FullScreenBlockSelect<T>;
+        'carousel-block'?: T | CarouselBlockSelect<T>;
+        'questions-block'?: T | QuestionsBlockSelect<T>;
+        'testimonial-block'?: T | TestimonialBlockSelect<T>;
+        highlights?: T | HighlightsBlockSelect<T>;
+        'section-carousel-with-thumbnail'?: T | SectionCarouselWithThumbnailSelect<T>;
+        quote?: T | QuoteBlockSelect<T>;
+        'section-media'?: T | SectionMediaSelect<T>;
+        'property-block'?: T | PropertyBlockSelect<T>;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

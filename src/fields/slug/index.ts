@@ -42,7 +42,7 @@ export const slugField: Slug = (fieldToUse = "title", overrides = {}) => {
             checkboxFieldPath: checkBoxField.name,
             fieldToUse,
           },
-          path: "~/fields/slug/slug.component.tsx",
+          path: "@/fields/slug/slug.component.tsx",
         },
       },
     },

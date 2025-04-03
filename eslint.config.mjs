@@ -12,6 +12,8 @@ const compat = new FlatCompat({
     "./src/migrations",
     "src/migrations",
     ".next",
+    "./src/shadcn",
+    "src/shadcn",
   ],
 });
 
