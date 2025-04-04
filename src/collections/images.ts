@@ -23,6 +23,7 @@ export const Images: CollectionConfig = {
   slug: "images",
   upload: {
     adminThumbnail: "thumbnail",
+    disableLocalStorage: process.env.NODE_ENV === "production",
     imageSizes: [
       {
         height: 300,
