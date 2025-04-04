@@ -15,9 +15,9 @@ export function MobileNavigationBar({ className }: { className?: string }) {
   const [open, setOpen] = useState<boolean>(false);
   return (
     <div className={`${className} block lg:hidden`}>
-      <div className="fixed left-8 z-30 top-8 text-inherit">
+      <div className="fixed flex justify-start left-8 z-30 top-8 text-inherit">
         <Link href="/">
-          <Logo height="30px" width="100%" />
+          <Logo height="30px" width="auto" />
         </Link>
       </div>
       <Sheet key="mobile-menu" onOpenChange={setOpen} open={open}>
@@ -98,7 +98,7 @@ export default function NavigationBar({ className }: { className?: string }) {
         </nav>
         <div>
           <Link className="text-current" href="/">
-            <Logo height="42px" width="100%" />
+            <Logo height="42px" width="auto" />
           </Link>
         </div>
         <div className="flex-1 text-white flex justify-end">

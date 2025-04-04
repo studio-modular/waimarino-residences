@@ -6,7 +6,7 @@ import MailingList from "./mailing-list";
 
 export default function Footer() {
   return (
-    <footer className="p-8 lg:p-16 bg-[#3C3A2C] dark:bg-black text-white">
+    <footer className="p-8 lg:p-16 bg-[#3C3A2C] text-white">
       <div className="mx-auto flex flex-col-reverse md:flex-row gap-16 lg:gap-8">
         <nav className="basis-1/4">
           <div className="flex flex-col gap-3 *:font-skia *:tracking-wider uppercase *:text-[#EAEAE5]">
