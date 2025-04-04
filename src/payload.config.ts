@@ -34,6 +34,7 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URI || "",
     },
+    push: false,
   }),
   editor: lexicalEditor(),
   globals: [Home, Offer, Properties, Location],
