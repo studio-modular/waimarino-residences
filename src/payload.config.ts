@@ -84,6 +84,12 @@ export default buildConfig({
       acl: "public-read",
       bucket: env.S3_BUCKET,
       collections: {
+        files: {
+          generateFileURL: ({ filename, prefix }) => {
+            return `${env.CLOUDFRONT_DISTRIBUTION}${prefix ? "/" + prefix : ""}/${encodeURIComponent(filename)}`;
+          },
+          prefix: "files",
+        },
         images: {
           generateFileURL: ({ filename, prefix }) => {
             return `${env.CLOUDFRONT_DISTRIBUTION}${prefix ? "/" + prefix : ""}/${encodeURIComponent(filename)}`;
