@@ -100,7 +100,7 @@ export function ContactForm() {
           name="postalAddress"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Message</FormLabel>
+              <FormLabel>Postal Address</FormLabel>
               <FormControl>
                 <AutosizeTextarea
                   className="border-black placeholder:text-dg-off-black/80  text-dg-off-black"

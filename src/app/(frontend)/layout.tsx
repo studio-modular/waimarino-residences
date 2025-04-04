@@ -1,5 +1,4 @@
-import type { Metadata } from "next";
-import type { Viewport } from "next";
+import type { Metadata, Viewport } from "next";
 
 import Footer from "@/components/footer";
 import { PasswordProtection } from "@/components/password-protection";
