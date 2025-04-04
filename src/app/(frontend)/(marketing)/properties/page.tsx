@@ -50,7 +50,7 @@ export default async function PropertiesPage() {
   if (!data) return null;
   return (
     <>
-      <div className="top-0 left-0 h-auto">
+      <div className="sticky top-0 left-0 h-auto">
         <AspectRatio className="flex justify-center items-center h-auto" ratio={16 / 9}>
           {data.asset?.value && typeof data.asset?.value !== "number" && data.asset.relationTo === "images" && (
             <SectionImage image={data.asset.value} sizes="(max-width: 768px) 200vw, 100vw" />
@@ -73,7 +73,7 @@ export default async function PropertiesPage() {
           className="flex flex-col items-center gap-2 text-white absolute bottom-6 left-1/2 -translate-x-1/2"
           href="#content"
         >
-          <h2 className="uppercase tracking-widest font-lg">See More</h2>
+          <h2 className="uppercase tracking-widest !text-base !mb-0 font-normal">See More</h2>
           <ChevronDown className="stroke-1" />
         </Link>
       </div>
