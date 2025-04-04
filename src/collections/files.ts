@@ -22,6 +22,7 @@ export const Files: CollectionConfig = {
   ],
   slug: "files",
   upload: {
+    disableLocalStorage: process.env.NODE_ENV === "production",
     staticDir: "media",
   },
 };
