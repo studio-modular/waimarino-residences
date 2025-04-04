@@ -10,6 +10,7 @@ import { buildConfig } from "payload";
 import computeBlurhash from "payload-blurhash-plugin";
 import sharp from "sharp";
 
+import { Files } from "./collections/files";
 import { Images } from "./collections/images";
 import { Users } from "./collections/Users";
 import { Home } from "./globals/home";
@@ -27,7 +28,7 @@ export default buildConfig({
     },
     user: Users.slug,
   },
-  collections: [Users, Images],
+  collections: [Users, Images, Files],
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URI || "",
