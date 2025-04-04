@@ -14,6 +14,7 @@ import { Files } from "./collections/files";
 import { Images } from "./collections/images";
 import { Users } from "./collections/Users";
 import { Home } from "./globals/home";
+import { Location } from "./globals/location";
 import { Offer } from "./globals/offer";
 import { Properties } from "./globals/properties";
 import { env } from "./utilities/env";
@@ -35,7 +36,7 @@ export default buildConfig({
     },
   }),
   editor: lexicalEditor(),
-  globals: [Home, Offer, Properties],
+  globals: [Home, Offer, Properties, Location],
   plugins: [
     computeBlurhash({
       collections: ["images"],
@@ -75,6 +76,7 @@ export default buildConfig({
         "film",
         "privacy-policy",
         "staff",
+        "location",
         "terms-and-conditions",
       ],
       tabbedUI: true,
