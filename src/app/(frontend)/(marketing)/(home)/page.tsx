@@ -50,8 +50,8 @@ export default async function HomePage() {
   if (!data) return null;
   return (
     <>
-      <div className="sticky top-0 left-0 h-auto">
-        <AspectRatio className="flex justify-center items-center h-auto" ratio={16 / 9}>
+      <div className="sticky top-0 left-0 md:h-auto h-[70vh]">
+        <AspectRatio className="flex justify-center items-center md:h-auto h-[70vh]" ratio={16 / 9}>
           {data.asset?.value && typeof data.asset?.value !== "number" && data.asset.relationTo === "images" && (
             <SectionImage image={data.asset.value} sizes="(max-width: 768px) 200vw, 100vw" />
           )}

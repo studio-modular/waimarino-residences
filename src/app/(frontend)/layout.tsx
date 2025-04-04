@@ -1,22 +1,31 @@
+import type { Metadata } from "next";
+import type { Viewport } from "next";
+
 import Footer from "@/components/footer";
 import { PasswordProtection } from "@/components/password-protection";
-import { Scroll } from "@/components/scroll";
-import { Toaster } from "@/shadcn/components/ui/sonner";
 
 import "../../styles/global.css";
 
+import { Scroll } from "@/components/scroll";
+import { Toaster } from "@/shadcn/components/ui/sonner";
+import { env } from "@/utilities/env";
 import { abel, goudy, skia } from "@/utilities/fonts";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { domAnimation, LazyMotion } from "motion/react";
+import { cookies } from "next/headers";
 import { unstable_ViewTransition as ViewTransition } from "react";
 import React from "react";
 
-export const metadata = {
-  title: "Home | The Residence",
+export const viewport: Viewport = {
+  initialScale: 1,
+  maximumScale: 1,
+  minimumScale: 1,
+  themeColor: "#3C3A2C",
 };
 
-import { env } from "@/utilities/env";
-import { cookies } from "next/headers";
+export const metadata: Metadata = {
+  title: "Home | The Residence",
+};
 
 export default async function RootLayout(props: { children: React.ReactNode }) {
   const cookieStore = await cookies();
