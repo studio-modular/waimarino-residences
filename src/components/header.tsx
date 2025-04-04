@@ -49,9 +49,8 @@ export function MobileNavigationBar({ className }: { className?: string }) {
             <Separator className="w-11/12 bg-white mx-auto" />
             <Link
               className="uppercase tracking-wider text-lg text-left w-11/12 mx-auto"
-              href="https://waimarinolodge.co.nz/location"
+              href="/location"
               onClick={() => setOpen(false)}
-              target="_blank"
             >
               Location
             </Link>
@@ -87,11 +86,7 @@ export default function NavigationBar({ className }: { className?: string }) {
         className={`hidden lg:flex fixed bg-gradient-to-b from-black/10 to-black/0 !border-l-transparent box-border top-0 font-skia tracking-wide left-0 w-full p-6 lg:p-8 text-white z-30 items-start ${className ?? ""}`}
       >
         <nav className="flex-1 flex gap-8 lg:gap-12 items-start text-sm h-full uppercase tracking-wider">
-          <Link
-            className="uppercase tracking-wider text-base"
-            href="https://waimarinolodge.co.nz/location"
-            target="_blank"
-          >
+          <Link className="uppercase tracking-wider text-base" href="/location">
             Location
           </Link>
           <Link className="uppercase tracking-wider text-base" href="/properties">
@@ -134,9 +129,8 @@ export default function NavigationBar({ className }: { className?: string }) {
                 </Link>
                 <Link
                   className="uppercase tracking-wider text-lg text-right w-11/12 mx-auto"
-                  href="https://waimarinolodge.co.nz/location"
+                  href="/location"
                   onClick={() => setOpen(false)}
-                  target="_blank"
                 >
                   Location
                 </Link>

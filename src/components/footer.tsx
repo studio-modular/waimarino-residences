@@ -13,11 +13,7 @@ export default function Footer() {
             <Link className="uppercase tracking-wider text-base" href="/">
               Home
             </Link>
-            <Link
-              className="uppercase tracking-wider text-base"
-              href="https://waimarinolodge.co.nz/properties"
-              target="_blank"
-            >
+            <Link className="uppercase tracking-wider text-base" href="/location">
               Location
             </Link>
             <Link className="uppercase tracking-wider text-base" href="/properties">
@@ -45,13 +41,6 @@ export default function Footer() {
           </Link>
         </div>
       </div>
-      {/* <div className="flex-1 items-center justify-end">
-				<p className=" text-right">
-					&copy; {new Date().getFullYear()} The Design Group.
-					<br />
-					All Rights Reserved.
-				</p>
-			</div> */}
     </footer>
   );
 }
