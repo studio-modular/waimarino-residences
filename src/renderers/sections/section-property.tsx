@@ -39,7 +39,7 @@ export function SectionProperty({ description, features, image, logo }: Property
                     image={logo}
                     imageProps={{
                       alt: logo.alternativeText,
-                      className: "!object-contain !object-left w-full h-full`",
+                      className: "!object-contain !object-left w-full h-full",
                       fill: true,
                       sizes: "(max-width: 768px) 150px",
                       src: logo.url!,
