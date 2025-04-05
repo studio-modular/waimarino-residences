@@ -12,13 +12,14 @@ export const imageLoader: (i: ImageType) => ImageLoader =
   (image: ImageType) =>
   ({ width }) => {
     const { sizes, url } = image;
-    if (!sizes) return image.url! + "?q=100&w=" + width;
+    if (!sizes) return decodeURIComponent(image.url! + "?q=100&w=" + width);
     const { "extra-large": extraLarge, large, medium, small } = sizes;
-    if (width <= 500 && small?.url && small.width) return encodeURI(small.url + "?q=100&w=" + width);
-    if (width <= 1500 && medium?.url && medium.width) return encodeURI(medium.url + "?q=100&w=" + width);
-    if (width <= 2250 && large?.url && large.width) return encodeURI(large.url + "?q=100&w=" + width);
-    if (width <= 3000 && extraLarge?.url && extraLarge.width) return encodeURI(extraLarge.url + "?q=100&w=" + width);
-    return encodeURI(url! + "?q=100&w=" + width);
+    if (width <= 500 && small?.url && small.width) return decodeURIComponent(small.url + "?q=100&w=" + width);
+    if (width <= 1500 && medium?.url && medium.width) return decodeURIComponent(medium.url + "?q=100&w=" + width);
+    if (width <= 2250 && large?.url && large.width) return decodeURIComponent(large.url + "?q=100&w=" + width);
+    if (width <= 3000 && extraLarge?.url && extraLarge.width)
+      return decodeURIComponent(extraLarge.url + "?q=100&w=" + width);
+    return decodeURIComponent(url! + "?q=100&w=" + width);
   };
 
 export function S3Image({ image, imageProps }: { image: ImageType; imageProps: ImageProps }) {
