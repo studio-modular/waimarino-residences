@@ -30,21 +30,26 @@ export function SectionProperty({ description, features, image, logo }: Property
         <div className="flex flex-col items-center justify-center gap-8">
           <div>
             <div className="w-3/4 mx-auto md:mx-0 md:w-full md:max-w-40 mb-8">
-              {logo && typeof logo !== "number" && (
-                <S3Image
-                  image={logo}
-                  imageProps={{
-                    alt: logo.alternativeText,
-                    className: "max-w-40 w-full h-auto",
-                    fill: true,
-                    sizes: "(max-width: 768px) 150px",
-                    src: logo.url!,
-                    style: {
-                      objectPosition: `${logo.focalX ?? 50}% ${logo.focalY ?? 50}%`,
-                    },
-                  }}
-                />
-              )}
+              <AspectRatio
+                className="ratio flex items-center justify-center bg-foreground text-background"
+                ratio={16 / 9}
+              >
+                {logo && typeof logo !== "number" && (
+                  <S3Image
+                    image={logo}
+                    imageProps={{
+                      alt: logo.alternativeText,
+                      className: "!object-contain !object-left w-full h-full`",
+                      fill: true,
+                      sizes: "(max-width: 768px) 150px",
+                      src: logo.url!,
+                      style: {
+                        objectPosition: `${logo.focalX ?? 50}% ${logo.focalY ?? 50}%`,
+                      },
+                    }}
+                  />
+                )}
+              </AspectRatio>
             </div>
             {description && <RichText className="max-w-72" data={description} />}
           </div>
