@@ -12,14 +12,17 @@ export const imageLoader: (i: ImageType) => ImageLoader =
   (image: ImageType) =>
   ({ width }) => {
     const { sizes, url } = image;
-    if (!sizes) return decodeURIComponent(image.url! + "?q=100&w=" + width);
+    if (!sizes) return decodeURIComponent(image.url! + "?q=100&w=" + width).replaceAll(" ", "%20");
     const { "extra-large": extraLarge, large, medium, small } = sizes;
-    if (width <= 500 && small?.url && small.width) return decodeURIComponent(small.url + "?q=100&w=" + width);
-    if (width <= 1500 && medium?.url && medium.width) return decodeURIComponent(medium.url + "?q=100&w=" + width);
-    if (width <= 2250 && large?.url && large.width) return decodeURIComponent(large.url + "?q=100&w=" + width);
+    if (width <= 500 && small?.url && small.width)
+      return decodeURIComponent(small.url + "?q=100&w=" + width).replaceAll(" ", "%20");
+    if (width <= 1500 && medium?.url && medium.width)
+      return decodeURIComponent(medium.url + "?q=100&w=" + width).replaceAll(" ", "%20");
+    if (width <= 2250 && large?.url && large.width)
+      return decodeURIComponent(large.url + "?q=100&w=" + width).replaceAll(" ", "%20");
     if (width <= 3000 && extraLarge?.url && extraLarge.width)
-      return decodeURIComponent(extraLarge.url + "?q=100&w=" + width);
-    return decodeURIComponent(url! + "?q=100&w=" + width);
+      return decodeURIComponent(extraLarge.url + "?q=100&w=" + width).replaceAll(" ", "%20");
+    return decodeURIComponent(url! + "?q=100&w=" + width).replaceAll(" ", "%20");
   };
 
 export function S3Image({ image, imageProps }: { image: ImageType; imageProps: ImageProps }) {
