@@ -56,7 +56,7 @@ export const Images: CollectionConfig = {
         // width: 768,
       },
     ],
-    mimeTypes: ["image/jpg", "image/jpeg"],
+    mimeTypes: ["image/jpg", "image/jpeg", "image/png"],
     staticDir: "media",
   },
 };
