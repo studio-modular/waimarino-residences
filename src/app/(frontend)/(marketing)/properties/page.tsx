@@ -6,7 +6,7 @@ import { VideoRenderer } from "@/renderers/video";
 import { AspectRatio } from "@/shadcn/components/ui/aspect-ratio";
 import { env } from "@/utilities/env";
 import { payload } from "@/utilities/payload";
-import { ChevronDown, MapPin } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { unstable_cache } from "next/cache";
 import Link from "next/link";
 
@@ -66,7 +66,6 @@ export default async function PropertiesPage() {
             )}
         </AspectRatio>
         <div className="text-white text-center flex flex-col gap-4 justify-center items-center max-w-screen-sm absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-          <MapPin className="stroke-1 size-8 md:size-12" />
           <h2 className="font-serif leading-loose text-balance text-lg md:text-xl">{data.markerText}</h2>
         </div>
         <Link
