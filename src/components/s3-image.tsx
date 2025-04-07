@@ -35,7 +35,6 @@ export function S3Image({ image, imageProps }: { image: ImageType; imageProps: I
       placeholder="blur"
       sizes={imageProps.sizes ?? "100vw"}
       style={{
-        background: "black",
         objectPosition: `${image.focalX ?? 50}% ${image.focalY ?? 50}%`,
       }}
     />
