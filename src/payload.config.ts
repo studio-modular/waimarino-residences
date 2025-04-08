@@ -55,6 +55,7 @@ export default buildConfig({
       uploadSettings: {
         cors_origin: env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000",
         new_asset_settings: {
+          max_resolution_tier: "2160p",
           playback_policy: ["public"],
         },
       },
